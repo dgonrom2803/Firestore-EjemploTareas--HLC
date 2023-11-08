@@ -1,0 +1,7 @@
+{
+  "name": "ejemplo-tareas",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

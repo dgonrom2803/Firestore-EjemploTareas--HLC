@@ -10,14 +10,38 @@ import { FirestoreService } from '../firestore.service';
 export class HomePage {
 
   tareaEditando = {} as Tarea;
+  arrayColeccionTareas: any = [{
+    id: "",
+    tarea: {} as Tarea
 
-  constructor(private firestoreService: FirestoreService) {}
+
+}];
+
+  constructor(private firestoreService: FirestoreService) {
+    this.obtenerListaTareas();
+  }
 
   clickBotonInsertar(){
-    this.firestoreService.insertar("tareas", this.tareaEditando);
+    this.firestoreService.insertar("tareas", this.tareaEditando).then(() => {
+    console.log('Tarea creada correctamente!');
+    this.tareaEditando= {} as Tarea;
+    }, (error) => {
+      console.error(error);
+    });
   }
 
+  obtenerListaTareas(){
+    this.firestoreService.consultar("tareas").subscribe((datosRecibidos) => {
+      this.arrayColeccionTareas = [];
+      datosRecibidos.forEach((datosTarea) => {
+        this.arrayColeccionTareas.push({
+          id: datosTarea.payload.doc.id,
+          tarea: datosTarea.payload.doc.data()
+
+        })
+      });
+    });
 
   }
 
-
+}

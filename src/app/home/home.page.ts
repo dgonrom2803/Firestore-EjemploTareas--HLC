@@ -13,9 +13,8 @@ export class HomePage {
   arrayColeccionTareas: any = [{
     id: "",
     tarea: {} as Tarea
-
-
 }];
+idTareaSelec: string = "";
 
   constructor(private firestoreService: FirestoreService) {
     this.obtenerListaTareas();
@@ -41,7 +40,20 @@ export class HomePage {
         })
       });
     });
-
+  }
+  selecTarea(idTarea:string, tareaSelec: Tarea){
+    this.tareaEditando = tareaSelec;
+    this.idTareaSelec = idTarea;
   }
 
+
+  clickBotonBorrar(){
+    this.firestoreService.borrar("tareas", this.idTareaSelec).then(() => {
+    console.log('Tarea borrada correctamente!');
+    this.tareaEditando= {} as Tarea;
+    this.idTareaSelec = "";
+    }, (error) => {
+      console.error(error);
+    });
+  }
 }

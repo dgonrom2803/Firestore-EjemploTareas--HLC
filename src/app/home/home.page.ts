@@ -56,4 +56,13 @@ idTareaSelec: string = "";
       console.error(error);
     });
   }
+
+  clickBotonModificar(){
+    this.firestoreService.modificar("tareas",this.idTareaSelec, this.tareaEditando).then(() => {
+      console.log('Tarea modificada correctamente!');
+    }, (error) => {
+      console.error(error);
+    });
+  }
+
 }

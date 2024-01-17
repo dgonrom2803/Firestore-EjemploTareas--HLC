@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Tarea} from '../tarea';
 import { FirestoreService } from '../firestore.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +17,7 @@ export class HomePage {
 }];
 idTareaSelec: string = "";
 
-  constructor(private firestoreService: FirestoreService) {
+  constructor(private firestoreService: FirestoreService, private router: Router) {
     this.obtenerListaTareas();
   }
 
@@ -44,6 +45,7 @@ idTareaSelec: string = "";
   selecTarea(idTarea:string, tareaSelec: Tarea){
     this.tareaEditando = tareaSelec;
     this.idTareaSelec = idTarea;
+    this.router.navigate(['detalle', this.idTareaSelec]);
   }
 
 

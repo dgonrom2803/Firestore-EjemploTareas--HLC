@@ -1,17 +1,49 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>detalle</ion-title>
+    <ion-title>Detalle</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">detalle</ion-title>
+      <ion-title size="large">Detalle</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <p>{{ id }}</p>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-label>ID</ion-label>
+        <ion-note>{{ document.id }}</ion-note>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-label>Título</ion-label>
+        <ion-note>{{ tareaEditando.titulo }}</ion-note>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-label>Descripción</ion-label>
+        <ion-note>{{ tareaEditando.descripcion }}</ion-note>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-  <p>Título: {{ document.data.titulo }}</p>
+  <!-- Botones de Modificar y Borrar -->
+  <ion-button (click)="mostrarFormulario = !mostrarFormulario">Modificar tarea</ion-button>
+  <ion-button (click)="clickBotonBorrar()">Borrar tarea</ion-button>
+
+  <!-- Formulario de modificación -->
+  <div *ngIf="mostrarFormulario">
+    <ion-label>Editar Tarea</ion-label>
+    <ion-input [(ngModel)]="tareaEditando.titulo"></ion-input>
+
+    <ion-label>Editar Descripción</ion-label>
+    <ion-input [(ngModel)]="tareaEditando.descripcion"></ion-input>
+
+    <ion-button (click)="guardarCambios()">Guardar cambios</ion-button>
+  </div>
 </ion-content>

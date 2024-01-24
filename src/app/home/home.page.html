@@ -11,15 +11,15 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-label>Titulo</ion-label>
-  <ion-input [(ngModel)]="tareaEditando.titulo"></ion-input>
+  <div *ngIf="mostrarFormulario">
+    <ion-label>Titulo</ion-label>
+    <ion-input [(ngModel)]="tareaEditando.titulo"></ion-input>
 
-  <ion-label>Descripción</ion-label>
-  <ion-input [(ngModel)]="tareaEditando.descripcion"></ion-input>
+    <ion-label>Descripción</ion-label>
+    <ion-input [(ngModel)]="tareaEditando.descripcion"></ion-input>
 
-  <ion-button (click)="clickBotonInsertar()">Añadir tarea</ion-button>
-  <ion-button (click)="clickBotonBorrar()">Borrar tarea</ion-button>
-  <ion-button (click)="clickBotonModificar()">Modificar tarea</ion-button>
+    <ion-button (click)="clickBotonInsertar()">Añadir tarea</ion-button>
+  </div>
 
   <h1>LISTA DE TAREAS</h1>
   <ion-list>
@@ -34,4 +34,11 @@
       </ion-grid>
     </ion-item>
   </ion-list>
+
+  <!-- Añadimos el ion-fab-button -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="mostrarFormulario = !mostrarFormulario">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

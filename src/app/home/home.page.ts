@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Tarea } from '../tarea';
+import { Vehiculo } from '../vehiculo';
 import { FirestoreService } from '../firestore.service';
 import { Router } from '@angular/router';
 
@@ -10,64 +10,56 @@ import { Router } from '@angular/router';
 })
 export class HomePage {
 
-  tareaEditando = {} as Tarea;
-  arrayColeccionTareas: any = [{
+  vehiculoEditando = {} as Vehiculo;
+  arrayColeccionVehiculos: any = [{
     id: "",
-    tarea: {} as Tarea
+    vehiculo: {} as Vehiculo
   }];
-  idTareaSelec: string = "";
-  mostrarFormulario = false; // Variable para controlar la visibilidad del formulario
+
+  mostrarFormulario = false;
 
   constructor(private firestoreService: FirestoreService, private router: Router) {
-    this.obtenerListaTareas();
+    this.obtenerListaVehiculos();
   }
 
   clickBotonInsertar() {
-    this.firestoreService.insertar("tareas", this.tareaEditando).then(() => {
-      console.log('Tarea creada correctamente!');
-      this.tareaEditando = {} as Tarea;
-      this.mostrarFormulario = false; // Oculta el formulario después de añadir la tarea
+    // Insertar la tarea y obtener la respuesta
+    this.firestoreService.insertar("vehiculos", this.vehiculoEditando).then((respuesta: any) => {
+      console.log('Vehiculo añadido correctamente!');
+      
+      // Obtener el ID de la tarea recién creada
+      const nuevoId = respuesta.id;
+
+      // Limpiar tareaEditando
+      this.vehiculoEditando = {} as Vehiculo;
+
+      // Navegar a la página de detalle con el nuevo ID y el formulario para editar los detalles
+      this.router.navigate(['detalle', nuevoId], { state: { editar: true } });
     }, (error) => {
       console.error(error);
     });
   }
 
-  obtenerListaTareas() {
-    this.firestoreService.consultar("tareas").subscribe((datosRecibidos) => {
-      this.arrayColeccionTareas = [];
-      datosRecibidos.forEach((datosTarea) => {
-        this.arrayColeccionTareas.push({
-          id: datosTarea.payload.doc.id,
-          tarea: datosTarea.payload.doc.data()
-        });
+  obtenerListaVehiculos() {
+    this.firestoreService.consultar("vehiculos").subscribe((datosRecibidos) => {
+      this.arrayColeccionVehiculos = [];
+      datosRecibidos.forEach((datosVehiculo) => {
+        this.arrayColeccionVehiculos.push({
+          id: datosVehiculo.payload.doc.id,
+          vehiculo: datosVehiculo.payload.doc.data()
+        })
       });
     });
   }
 
-  selecTarea(idTarea: string, tareaSelec: Tarea) {
-    this.tareaEditando = tareaSelec;
-    this.idTareaSelec = idTarea;
-    this.router.navigate(['detalle', this.idTareaSelec]);
+  selecVehiculo(idVehiculo:string, vehiculoSelec: Vehiculo){
+    this.vehiculoEditando = vehiculoSelec;
+    // Aquí podrías redirigir a la página de detalle para esta tarea
+    this.router.navigate(['detalle', idVehiculo]);
   }
 
-  clickBotonBorrar() {
-    this.firestoreService.borrar("tareas", this.idTareaSelec).then(() => {
-      console.log('Tarea borrada correctamente!');
-      this.tareaEditando = {} as Tarea;
-      this.idTareaSelec = "";
-      this.mostrarFormulario = false; // Oculta el formulario después de borrar la tarea
-    }, (error) => {
-      console.error(error);
-    });
-  }
 
-  clickBotonModificar() {
-    this.firestoreService.modificar("tareas", this.idTareaSelec, this.tareaEditando).then(() => {
-      console.log('Tarea modificada correctamente!');
-      this.mostrarFormulario = false; // Oculta el formulario después de modificar la tarea
-    }, (error) => {
-      console.error(error);
-    });
-  }
+selecNuevo(){
 
-}
+  this.router.navigate(['detalle', 'nuevo'])  ;
+}}

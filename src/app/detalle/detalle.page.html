@@ -14,35 +14,29 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-label>ID</ion-label>
-        <ion-note>{{ document.id }}</ion-note>
+        <ion-label>Modelo: </ion-label>
+        <ion-note>{{ document.vehiculo.modelo }}</ion-note>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-label>Título</ion-label>
-        <ion-note>{{ tareaEditando.titulo }}</ion-note>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-label>Descripción</ion-label>
-        <ion-note>{{ tareaEditando.descripcion }}</ion-note>
+        <ion-label>Tipo de avería: </ion-label>
+        <ion-note>{{ document.vehiculo.averia }}</ion-note>
       </ion-col>
     </ion-row>
   </ion-grid>
 
   <!-- Botones de Modificar y Borrar -->
-  <ion-button (click)="mostrarFormulario = !mostrarFormulario">Modificar tarea</ion-button>
-  <ion-button (click)="clickBotonBorrar()">Borrar tarea</ion-button>
+  <ion-button (click)="mostrarFormulario = !mostrarFormulario">Modificar vehiculo</ion-button>
+  <ion-button (click)="clickBotonBorrar()">Borrar vehiculo</ion-button>
 
   <!-- Formulario de modificación -->
   <div *ngIf="mostrarFormulario">
-    <ion-label>Editar Tarea</ion-label>
-    <ion-input [(ngModel)]="tareaEditando.titulo"></ion-input>
+    <ion-label>Editar Vehiculo</ion-label>
+    <ion-input [(ngModel)]="document.vehiculo.modelo"></ion-input>
 
-    <ion-label>Editar Descripción</ion-label>
-    <ion-input [(ngModel)]="tareaEditando.descripcion"></ion-input>
+    <ion-label>Editar Avería</ion-label>
+    <ion-input [(ngModel)]="document.vehiculo.averia"></ion-input>
 
     <ion-button (click)="guardarCambios()">Guardar cambios</ion-button>
   </div>

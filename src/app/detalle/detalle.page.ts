@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Tarea } from '../tarea';
+import { Vehiculo } from '../vehiculo';
 import { ActivatedRoute } from '@angular/router';
 import { FirestoreService } from '../firestore.service';
 
@@ -11,12 +11,12 @@ import { FirestoreService } from '../firestore.service';
 export class DetallePage implements OnInit {
 
   id: string = "";
-  tareaEditando: Tarea = {} as Tarea;
   mostrarFormulario = false;
+  editar: boolean = false;
 
   document: any = {
     id: "",
-    data: {} as Tarea
+    data: {} as Vehiculo
   };
 
   constructor(private activatedRoute: ActivatedRoute, private firestoreService: FirestoreService) {
@@ -27,29 +27,39 @@ export class DetallePage implements OnInit {
     let idRecibido = this.activatedRoute.snapshot.paramMap.get('id');
     if (idRecibido != null) {
       this.id = idRecibido;
-      // Se hace la consulta a la base de datos para obtener los datos asociados a esa id
-      this.firestoreService.consultarPorId("tareas", this.id).subscribe((resultado: any) => {
-        // Preguntar si se hay encontrado un document con ese ID
-        if (resultado.payload.data() != null) {
-          this.document.id = resultado.payload.id
-          this.document.data = resultado.payload.data();
-          // Copiamos los datos al objeto tareaEditando para permitir la modificación
-          this.tareaEditando = { ...this.document.data };
-        } else {
-          // No se ha encontrado un document con ese ID. Vaciar los datos que hubiera
-          this.document.data = {} as Tarea;
-          this.tareaEditando = {} as Tarea;
-        }
-      });
+
+      // Verificar si se debe abrir el formulario para editar directamente
+      this.editar = this.activatedRoute.snapshot.paramMap.get('editar') === 'true';
+
+      // Si el ID es 'nuevo', inicializamos una nueva tarea
+      if (this.id === 'nuevo') {
+        this.document.vehiculo = {} as Vehiculo;
+      } else {
+        // Consultar la base de datos para obtener los datos asociados a esa id
+        this.firestoreService.consultarPorId("vehiculos", this.id).subscribe((resultado: any) => {
+          // Preguntar si se hay encontrado un documento con ese ID
+          if (resultado.payload.data() != null) {
+            this.document.vehiculo = resultado.payload.data();
+          } else {
+            // No se ha encontrado un documento con ese ID.
+            this.document.vehiculo = {} as Vehiculo;
+          }
+        });
+      }
+
+      // Si se debe abrir el formulario para editar, establecer la variable editar en true
+      if (this.editar) {
+        this.editar = true;
+      }
     } else {
       this.id = "";
     }
   }
 
   clickBotonBorrar() {
-    this.firestoreService.borrar("tareas", this.id).then(() => {
-      console.log('Tarea borrada correctamente!');
-      this.tareaEditando = {} as Tarea;
+    this.firestoreService.borrar("vehiculos", this.id).then(() => {
+      console.log('Vehiculo borrado correctamente!');
+      this.document.vehiculo = {} as Vehiculo;
       this.id = "";
     }, (error) => {
       console.error(error);
@@ -58,11 +68,11 @@ export class DetallePage implements OnInit {
 
   guardarCambios() {
     // Implementa la lógica para guardar los cambios en la base de datos
-    console.log('Cambios guardados:', this.tareaEditando);
+    console.log('Cambios guardados:', this.document.vehiculo);
 
     // Puedes agregar aquí la lógica para actualizar la tarea en la base de datos
-    this.firestoreService.modificar("tareas", this.id, this.tareaEditando).then(() => {
-      console.log('Tarea modificada correctamente!');
+    this.firestoreService.modificar("vehiculos", this.id, this.document.vehiculo).then(() => {
+      console.log('Vehiculo modificada correctamente!');
     }, (error) => {
       console.error(error);
     });

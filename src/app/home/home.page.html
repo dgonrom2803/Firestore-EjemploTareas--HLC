@@ -1,43 +1,43 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Ejemplo Tareas </ion-title>
+    <ion-title> Taller de vehiculos </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Ejemplo Tareas</ion-title>
+      <ion-title size="large">Taller de vehículos</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <div *ngIf="mostrarFormulario">
     <ion-label>Titulo</ion-label>
-    <ion-input [(ngModel)]="tareaEditando.titulo"></ion-input>
+    <ion-input [(ngModel)]="vehiculoEditando.modelo"></ion-input>
 
     <ion-label>Descripción</ion-label>
-    <ion-input [(ngModel)]="tareaEditando.descripcion"></ion-input>
+    <ion-input [(ngModel)]="vehiculoEditando.averia"></ion-input>
 
-    <ion-button (click)="clickBotonInsertar()">Añadir tarea</ion-button>
+    <ion-button (click)="clickBotonInsertar()">Añadir Vehiculo</ion-button>
   </div>
 
-  <h1>LISTA DE TAREAS</h1>
+  <h1>VEHICULOS EN REPARACIÓN</h1>
   <ion-list>
-    <ion-item *ngFor="let documentTarea of arrayColeccionTareas" (click)="selecTarea(documentTarea.id, documentTarea.tarea)">
-      <ion-grid>
-        <ion-row>
-          <h2>{{ documentTarea.tarea.titulo }}</h2>
-        </ion-row>
-        <ion-row>
-          <p>{{ documentTarea.tarea.descripcion }}</p>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
-  </ion-list>
+      <ion-item *ngFor="let documentVehiculo of arrayColeccionVehiculos" (click)="selecVehiculo(documentVehiculo.id, documentVehiculo.vehiculo)">
+        <ion-grid>
+          <ion-row>
+            <h2>{{ documentVehiculo.vehiculo.modelo }}</h2>
+          </ion-row>
+          <ion-row>
+            <p>{{ documentVehiculo.vehiculo.averia }}</p>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list>
 
   <!-- Añadimos el ion-fab-button -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="mostrarFormulario = !mostrarFormulario">
+    <ion-fab-button (click)="selecNuevo()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

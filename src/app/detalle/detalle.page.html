@@ -11,7 +11,8 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-grid>
+  <!-- Detalles del vehículo -->
+  <ion-grid *ngIf="!mostrarFormulario">
     <ion-row>
       <ion-col>
         <ion-label>Modelo: </ion-label>
@@ -27,8 +28,8 @@
   </ion-grid>
 
   <!-- Botones de Modificar y Borrar -->
-  <ion-button (click)="mostrarFormulario = !mostrarFormulario">Modificar vehiculo</ion-button>
-  <ion-button (click)="clickBotonBorrar()">Borrar vehiculo</ion-button>
+  <ion-button *ngIf="!mostrarFormulario" (click)="mostrarFormulario = true">Modificar vehiculo</ion-button>
+  <ion-button *ngIf="!mostrarFormulario" (click)="confirmarBorrado()">Borrar vehiculo</ion-button>
 
   <!-- Formulario de modificación -->
   <div *ngIf="mostrarFormulario">
@@ -38,6 +39,6 @@
     <ion-label>Editar Avería</ion-label>
     <ion-input [(ngModel)]="document.vehiculo.averia"></ion-input>
 
-    <ion-button (click)="guardarCambios()">Guardar cambios</ion-button>
+    <ion-button (click)="clickBotonInsertar()">Guardar cambios</ion-button>
   </div>
 </ion-content>

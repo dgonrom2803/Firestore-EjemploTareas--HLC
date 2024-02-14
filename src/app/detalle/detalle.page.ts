@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Vehiculo } from '../vehiculo';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FirestoreService } from '../firestore.service';
+import { Vehiculo } from '../vehiculo';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-detalle',
@@ -16,68 +17,105 @@ export class DetallePage implements OnInit {
 
   document: any = {
     id: "",
-    data: {} as Vehiculo
+    vehiculo: {} as Vehiculo
   };
 
-  constructor(private activatedRoute: ActivatedRoute, private firestoreService: FirestoreService) {
-  }
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, private firestoreService: FirestoreService, private alertController: AlertController) {}
 
   ngOnInit() {
-    // Se almacena en una variable el id que se ha recibido desde la página anterior
     let idRecibido = this.activatedRoute.snapshot.paramMap.get('id');
     if (idRecibido != null) {
       this.id = idRecibido;
-
-      // Verificar si se debe abrir el formulario para editar directamente
       this.editar = this.activatedRoute.snapshot.paramMap.get('editar') === 'true';
 
-      // Si el ID es 'nuevo', inicializamos una nueva tarea
       if (this.id === 'nuevo') {
-        this.document.vehiculo = {} as Vehiculo;
+        // Mostrar el formulario si se está creando un vehículo nuevo
+        this.mostrarFormulario = true;
       } else {
-        // Consultar la base de datos para obtener los datos asociados a esa id
+        // Consultar la base de datos para obtener los detalles del vehículo existente
         this.firestoreService.consultarPorId("vehiculos", this.id).subscribe((resultado: any) => {
-          // Preguntar si se hay encontrado un documento con ese ID
           if (resultado.payload.data() != null) {
             this.document.vehiculo = resultado.payload.data();
           } else {
-            // No se ha encontrado un documento con ese ID.
             this.document.vehiculo = {} as Vehiculo;
           }
         });
       }
 
-      // Si se debe abrir el formulario para editar, establecer la variable editar en true
       if (this.editar) {
-        this.editar = true;
+        this.mostrarFormulario = true;
       }
     } else {
       this.id = "";
     }
   }
 
-  clickBotonBorrar() {
+  async confirmarBorrado() {
+    const alert = await this.alertController.create({
+      header: 'Confirmar borrado',
+      message: '¿Estás seguro de que quieres borrar este vehículo?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary'
+        }, {
+          text: 'Borrar',
+          handler: () => {
+            this.borrarVehiculo(); // Llama a la función de borrado si el usuario confirma
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  borrarVehiculo() {
     this.firestoreService.borrar("vehiculos", this.id).then(() => {
       console.log('Vehiculo borrado correctamente!');
       this.document.vehiculo = {} as Vehiculo;
       this.id = "";
+      // Redirigir a la página de inicio después de borrar
+      this.router.navigate(['/home']);
+    }, (error) => {
+      console.error(error);
+    });
+  }
+
+  clickBotonInsertar() {
+    this.firestoreService.insertar("vehiculos", this.document.vehiculo).then(() => {
+      console.log('Vehículo añadido!');
+      this.document.vehiculo = {} as Vehiculo;
+      this.mostrarFormulario = false;
+      // Redirigir a la página de inicio después de guardar
+      this.router.navigate(['/home']);
     }, (error) => {
       console.error(error);
     });
   }
 
   guardarCambios() {
-    // Implementa la lógica para guardar los cambios en la base de datos
     console.log('Cambios guardados:', this.document.vehiculo);
 
-    // Puedes agregar aquí la lógica para actualizar la tarea en la base de datos
-    this.firestoreService.modificar("vehiculos", this.id, this.document.vehiculo).then(() => {
-      console.log('Vehiculo modificada correctamente!');
-    }, (error) => {
-      console.error(error);
-    });
-
-    // Después de guardar, oculta el formulario
-    this.mostrarFormulario = false;
+    if (this.id === 'nuevo') {
+      // Insertar un nuevo vehículo si el ID es 'nuevo'
+      this.firestoreService.insertar("vehiculos", this.document.vehiculo).then(() => {
+        console.log('Vehículo añadido correctamente!');
+        this.mostrarFormulario = false; // Ocultar el formulario después de guardar
+        // Navegar a la página de inicio después de guardar los cambios
+        this.router.navigate(['/']);
+      }, (error) => {
+        console.error(error);
+      });
+    } else {
+      // Actualizar el vehículo existente si el ID no es 'nuevo'
+      this.firestoreService.modificar("vehiculos", this.id, this.document.vehiculo).then(() => {
+        console.log('Vehiculo modificado correctamente!');
+        this.mostrarFormulario = false; // Ocultar el formulario después de guardar
+      }, (error) => {
+        console.error(error);
+      });
+    }
   }
 }

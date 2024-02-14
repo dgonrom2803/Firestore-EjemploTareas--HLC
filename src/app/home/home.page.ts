@@ -22,19 +22,11 @@ export class HomePage {
     this.obtenerListaVehiculos();
   }
 
-  clickBotonInsertar() {
-    // Insertar la tarea y obtener la respuesta
-    this.firestoreService.insertar("vehiculos", this.vehiculoEditando).then((respuesta: any) => {
-      console.log('Vehiculo añadido correctamente!');
-      
-      // Obtener el ID de la tarea recién creada
-      const nuevoId = respuesta.id;
-
-      // Limpiar tareaEditando
-      this.vehiculoEditando = {} as Vehiculo;
-
-      // Navegar a la página de detalle con el nuevo ID y el formulario para editar los detalles
-      this.router.navigate(['detalle', nuevoId], { state: { editar: true } });
+  clickBotonInsertar(){
+    this.firestoreService.insertar("vehiculos", this.vehiculoEditando).then(() => {
+    console.log('Vehículo añadido!');
+    this.vehiculoEditando= {} as Vehiculo;
+    this.mostrarFormulario = false;
     }, (error) => {
       console.error(error);
     });
@@ -59,7 +51,8 @@ export class HomePage {
   }
 
 
-selecNuevo(){
-
-  this.router.navigate(['detalle', 'nuevo'])  ;
-}}
+  selecNuevo() {
+    // Redirigir a la página de detalles con la indicación de que estamos agregando un nuevo vehículo
+    this.router.navigate(['detalle', 'nuevo']);
+  }
+  }

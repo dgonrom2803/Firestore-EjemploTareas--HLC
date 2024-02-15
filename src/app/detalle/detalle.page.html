@@ -31,6 +31,9 @@
   <ion-button *ngIf="!mostrarFormulario" (click)="mostrarFormulario = true">Modificar vehiculo</ion-button>
   <ion-button *ngIf="!mostrarFormulario" (click)="confirmarBorrado()">Borrar vehiculo</ion-button>
 
+  <!-- Botón para subir imagen -->
+  <ion-button *ngIf="!mostrarFormulario" (click)="seleccionarImagen()">Subir imagen</ion-button>
+
   <!-- Formulario de modificación -->
   <div *ngIf="mostrarFormulario">
     <ion-label>Editar Vehiculo</ion-label>

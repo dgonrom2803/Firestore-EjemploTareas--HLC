@@ -177,7 +177,7 @@ export class DetallePage implements OnInit {
     .then( downloadURL => {
       // EN LA VARIABLE downloadURL SE OBTIENE LA DIRECCIÓN URL DE LA IMAGEN
       console.log("downloadURL:" + downloadURL);
-      // this.document.data.imagenURL = downloadURL;
+      this.document.data.imagenURL = downloadURL;
       // Mostrar el mensaje de finalización de la subida
       toast.present();
       // Ocultar el mensaje de espera

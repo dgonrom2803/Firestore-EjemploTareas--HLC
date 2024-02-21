@@ -42,6 +42,6 @@
     <ion-label>Editar Avería</ion-label>
     <ion-input [(ngModel)]="document.vehiculo.averia"></ion-input>
 
-    <ion-button (click)="clickBotonInsertar()">Guardar cambios</ion-button>
+    <ion-button (click)="clickBotonInsertar(); subirImagen()">Guardar cambios</ion-button>
   </div>
 </ion-content>

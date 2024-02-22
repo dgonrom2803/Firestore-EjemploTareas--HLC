@@ -25,14 +25,17 @@
         <ion-note>{{ document.vehiculo.averia }}</ion-note>
       </ion-col>
     </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-label>Imagen: </ion-label>
+        <img [src]="document.vehiculo.imagenURL" *ngIf="document.vehiculo.imagenURL" alt="Imagen del vehículo">
+      </ion-col>
+    </ion-row>
   </ion-grid>
 
   <!-- Botones de Modificar y Borrar -->
   <ion-button *ngIf="!mostrarFormulario" (click)="mostrarFormulario = true">Modificar vehiculo</ion-button>
   <ion-button *ngIf="!mostrarFormulario" (click)="confirmarBorrado()">Borrar vehiculo</ion-button>
-
-  <!-- Botón para subir imagen -->
-  <ion-button *ngIf="!mostrarFormulario" (click)="seleccionarImagen()">Subir imagen</ion-button>
 
   <!-- Formulario de modificación -->
   <div *ngIf="mostrarFormulario">
@@ -42,6 +45,8 @@
     <ion-label>Editar Avería</ion-label>
     <ion-input [(ngModel)]="document.vehiculo.averia"></ion-input>
 
+    <!-- Botón para subir imagen -->
+    <ion-button (click)="seleccionarImagen()">Subir imagen</ion-button>
     <ion-button (click)="clickBotonInsertar(); subirImagen()">Guardar cambios</ion-button>
   </div>
 </ion-content>

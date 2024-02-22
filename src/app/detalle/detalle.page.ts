@@ -138,6 +138,7 @@ export class DetallePage implements OnInit {
                 // EN LA VARIABLE imagenSelec QUEDA ALMACENADA LA IMAGEN SELECCIONADA
                 this.imagenSelec="data:image/jpeg;base64,"+results[0];
                 console.log("Imagen que se ha seleccionado (en Base64): "+ this.imagenSelec);
+                this.subirImagen(); // Llama a subirImagen después de seleccionar la imagen
               }
             }, 
             (err) => {
@@ -148,7 +149,8 @@ export class DetallePage implements OnInit {
       }, (err) => {
         console.log(err);
       });
-  }
+}
+
 
   async subirImagen(){
     // Mensaje de espera  mientras se sube la imagen
@@ -177,7 +179,7 @@ export class DetallePage implements OnInit {
     .then( downloadURL => {
       // EN LA VARIABLE downloadURL SE OBTIENE LA DIRECCIÓN URL DE LA IMAGEN
       console.log("downloadURL:" + downloadURL);
-      this.document.data.imagenURL = downloadURL;
+      this.document.vehiculo.imagenURL = downloadURL;
       // Mostrar el mensaje de finalización de la subida
       toast.present();
       // Ocultar el mensaje de espera

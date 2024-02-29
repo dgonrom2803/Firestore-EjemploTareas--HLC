@@ -4,6 +4,7 @@ import { FirestoreService } from '../firestore.service';
 import { Vehiculo } from '../vehiculo';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { ImagePicker } from '@awesome-cordova-plugins/image-picker/ngx';
+import { Share } from '@capacitor/share';
 
 @Component({
   selector: 'app-detalle',
@@ -199,5 +200,11 @@ async eliminarArchivo (fileURL:string) {
     }, (err) => {
       console.log(err);
     });
+}
+async share(){
+await Share.share({
+  text: "Vehiculo: " + this.document.vehiculo.modelo + " Avería: " + this.document.vehiculo.averia,
+  
+});
 }
 }

@@ -49,4 +49,10 @@
     <ion-button (click)="seleccionarImagen()">Subir imagen</ion-button>
     <ion-button (click)="clickBotonInsertar(); subirImagen()">Guardar cambios</ion-button>
   </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="share()">
+      <ion-icon name="share-social-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

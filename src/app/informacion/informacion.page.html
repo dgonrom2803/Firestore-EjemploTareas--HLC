@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Información sobre la app</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Información sobre el autor</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Contenido de información del autor -->
+  <ion-card>
+    <ion-card-header>
+      <h3>Detalles del autor</h3>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Nombre: Diego González</p>
+      <p>País: España</p>
+      <p>Biografía: Diego González es un desarrollador de aplicaciones español conocido por crear la popular app de gestión de un taller de vehículos. 
+        Con una sólida formación en Desarrollo de Aplicaciones Web, Diego se destacó desde temprano por su habilidad para desarrollar soluciones innovadoras y funcionales.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <h3>Detalles de la app</h3>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Versión: 1.0</p>
+      <p>TallerPro es una aplicación móvil diseñada para facilitar la gestión integral de talleres de vehículos. 
+        Desde programación de citas hasta seguimiento de trabajos y facturación, TallerPro simplifica todas las operaciones diarias de un taller automotriz. 
+        Con funciones intuitivas y personalizables, esta app permite a los propietarios de talleres optimizar su tiempo y recursos,
+        brindando un servicio más eficiente y satisfactorio a sus clientes.</p>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <h3>Información de contacto</h3>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Para contactar con nosotros, por favor llame al siguiente número:</p>
+      <button (click)="realizarLlamada('+123456789')" class="llamar-button">
+        <ion-icon name="call" style="color: white;"></ion-icon>
+        Llamar
+      </button>
+      <p>+123456789</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-toolbar>
+  <ion-tabs>
+    <ion-tab-bar slot="top">
+      <ion-tab-button tab="home">
+        <ion-icon name="triangle"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="informacion">
+        <ion-icon name="ellipse"></ion-icon>
+        <ion-label>Información</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="mapa">
+        <ion-icon name="square"></ion-icon>
+        <ion-label>Mapa</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-toolbar>

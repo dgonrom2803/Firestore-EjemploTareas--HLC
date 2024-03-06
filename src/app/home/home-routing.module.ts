@@ -6,6 +6,14 @@ const routes: Routes = [
   {
     path: '',
     component: HomePage,
+  },
+  {
+    path: 'informacion',
+    redirectTo: '/informacion'
+  },
+  {
+    path: 'mapa',
+    redirectTo: '/mapa'
   }
 ];
 

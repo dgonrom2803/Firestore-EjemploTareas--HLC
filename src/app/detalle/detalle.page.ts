@@ -100,14 +100,14 @@ export class DetallePage implements OnInit {
 
   guardarCambios() {
     console.log('Cambios guardados:', this.document.vehiculo);
-
+  
     if (this.id === 'nuevo') {
       // Insertar un nuevo vehículo si el ID es 'nuevo'
       this.firestoreService.insertar("vehiculos", this.document.vehiculo).then(() => {
         console.log('Vehículo añadido correctamente!');
         this.mostrarFormulario = false; // Ocultar el formulario después de guardar
         // Navegar a la página de inicio después de guardar los cambios
-        this.router.navigate(['/']);
+        this.router.navigate(['/home']);
       }, (error) => {
         console.error(error);
       });
@@ -116,11 +116,16 @@ export class DetallePage implements OnInit {
       this.firestoreService.modificar("vehiculos", this.id, this.document.vehiculo).then(() => {
         console.log('Vehiculo modificado correctamente!');
         this.mostrarFormulario = false; // Ocultar el formulario después de guardar
+        // Si estás en modo de edición, redirigir a la página de inicio después de guardar los cambios
+        if (this.editar) {
+          this.router.navigate(['/home']);
+        }
       }, (error) => {
         console.error(error);
       });
     }
   }
+  
   async seleccionarImagen(){
     // Comprobar si la aplicación tiene permisos de lectura
     this.imagePicker.hasReadPermission().then(
@@ -207,4 +212,40 @@ await Share.share({
   
 });
 }
+eliminarImagen() {
+  // Obtener la URL de la imagen
+  const imagenURL = this.document.vehiculo.imagenURL;
+
+  // Mostrar un mensaje de confirmación antes de eliminar la imagen
+  this.presentConfirm('Confirmar eliminación', '¿Estás seguro de que quieres borrar esta imagen?', () => {
+    // Llamar al método para eliminar la imagen del Firestore y del almacenamiento
+    this.firestoreService.eliminarArchivoPorURL(imagenURL).then(() => {
+      // Eliminar la URL de la imagen del vehículo
+      this.document.vehiculo.imagenURL = "";
+      console.log('Imagen borrada correctamente!');
+    }).catch((error) => {
+      console.error('Error al borrar la imagen:', error);
+    });
+  });
+}
+
+async presentConfirm(header: string, message: string, callback: () => void) {
+  const alert = await this.alertController.create({
+    header: header,
+    message: message,
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel'
+      },
+      {
+        text: 'Confirmar',
+        handler: callback
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
 }

@@ -28,26 +28,48 @@
     <ion-row>
       <ion-col>
         <ion-label>Imagen: </ion-label>
-        <img [src]="document.vehiculo.imagenURL" *ngIf="document.vehiculo.imagenURL" alt="Imagen del vehículo">
+        <img
+          [src]="document.vehiculo.imagenURL"
+          *ngIf="document.vehiculo.imagenURL"
+          alt="Imagen del vehículo"
+        />
       </ion-col>
     </ion-row>
   </ion-grid>
 
   <!-- Botones de Modificar y Borrar -->
-  <ion-button *ngIf="!mostrarFormulario" (click)="mostrarFormulario = true">Modificar vehiculo</ion-button>
-  <ion-button *ngIf="!mostrarFormulario" (click)="confirmarBorrado()">Borrar vehiculo</ion-button>
+  <ion-button color="warning" *ngIf="!mostrarFormulario" (click)="mostrarFormulario = true"
+    >Modificar vehiculo</ion-button
+  >
+  <ion-button color="danger" *ngIf="!mostrarFormulario" (click)="confirmarBorrado()"
+    >Borrar vehiculo</ion-button
+  >
 
   <!-- Formulario de modificación -->
   <div *ngIf="mostrarFormulario">
-    <ion-label>Editar Vehiculo</ion-label>
+    <ion-label class="subrayado">Editar Vehiculo</ion-label>
     <ion-input [(ngModel)]="document.vehiculo.modelo"></ion-input>
 
-    <ion-label>Editar Avería</ion-label>
+    <ion-label class="subrayado">Editar Avería</ion-label>
     <ion-input [(ngModel)]="document.vehiculo.averia"></ion-input>
 
+    <ion-label class="subrayado">Imagen: </ion-label>
+    <img [src]="document.vehiculo.imagenURL" *ngIf="document.vehiculo.imagenURL" alt="Imagen del vehículo">
+
+    <br>
     <!-- Botón para subir imagen -->
-    <ion-button (click)="seleccionarImagen()">Subir imagen</ion-button>
-    <ion-button (click)="clickBotonInsertar(); subirImagen()">Guardar cambios</ion-button>
+    <ion-button (click)="seleccionarImagen()">Subir imagen 
+      <ion-icon name="camera-outline"></ion-icon>
+    </ion-button>
+    <br>
+    <!-- Botón para borrar la imagen -->
+    <ion-button color="danger" (click)="eliminarImagen()">Borrar imagen
+      <ion-icon name="trash-outline"></ion-icon></ion-button>
+
+      <br>
+    <ion-button color="success" (click)=" guardarCambios()">Guardar cambios
+      <ion-icon name="save-outline"></ion-icon>
+    </ion-button>
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
@@ -56,3 +78,22 @@
     </ion-fab-button>
   </ion-fab>
 </ion-content>
+
+<ion-toolbar>
+  <ion-tabs>
+    <ion-tab-bar slot="top">
+      <ion-tab-button tab="home">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="informacion">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        <ion-label>Información</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="mapa">
+        <ion-icon name="map-outline"></ion-icon>
+        <ion-label>Mapa</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-toolbar>
